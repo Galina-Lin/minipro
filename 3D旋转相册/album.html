@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Album</title>
+	</head>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			background-color: #000;
+			overflow: hidden;
+		}
+		#perspective{
+			perspective: 800px;/*景深*/
+		}
+		#wrap{
+			position: relative;
+			width: 133px;
+			height: 200px;
+			margin: 200px auto;
+			transform-style: preserve-3d;
+			transform: rotateX(-20deg) rotateY(0deg);
+			/*transition: 1s;值的改变有一个过渡过程*/
+		}
+		#wrap img{
+			position: absolute;
+		}
+	</style>
+<body>
+     <div id="perspective">
+     	<div id="wrap">
+     		<img src="images/1.jpg" alt="" />
+     		<img src="images/2.jpg" alt="" />
+     		<img src="images/3.jpg" alt="" />
+     		<img src="images/4.jpg" alt="" />
+     		<img src="images/5.jpg" alt="" />
+     		<img src="images/6.jpg" alt="" />
+     		<img src="images/7.jpg" alt="" />
+     		<img src="images/8.jpg" alt="" />
+     		<img src="images/9.jpg" alt="" />
+     		<img src="images/10.jpg" alt="" />
+     		<img src="images/11.jpg" alt="" />
+     	</div>
+     </div>
+     <script>
+     	// 功能一，所有图片撑开成一个圆
+     	// 1所有图片
+        window.onload = function(){
+     	    var oImg = document.getElementsByTagName("img");
+     	    var deg = 360/11; 
+            // var oWrap = document.getElementById("wrap");
+            var nowX,nowY,lastX,lastY,minsX,minsY,roX=-20,roY=0;
+            Array.prototype.forEach.call(oImg,function(el,index){
+                el.style.transform = "rotateY("+index*deg+"deg) translateZ(350px)";
+                el.style.transition = "1s "+(11-index)*0.1+"s";
+            });
+            document.onmousedown = function(e){//点击
+                console.log("点击");
+            	var e = e||window.event;//兼容IE与火狐
+            	lastX = e.clientX;
+                lastY = e.clientY;
+            	this.onmousemove = function(e){
+                //移动
+                    console.log("移动");
+                    nowX = e.clientX;
+                    nowY = e.clientY;
+
+                    //TODO 即将要做的事情 备忘录
+                    //坐标差
+                    minsX = nowX - lastX;
+                    minsY = nowY - lastY;
+
+                    //旋转的总度数
+                    roX -= minsY*0.2;
+                    roY += minsX*0.2;
+                    wrap.style.transform = "rotateX("+roX+"deg) rotateY("+roY+"deg)";
+
+                    //用完的值
+                    lastX = nowX;
+                    lastY = nowY;
+
+            	}
+            	this.onmouseup = function(e){//松开
+                    console.log("松开");
+                    this.onmousemove = null;
+                    this.onmouseup = null;
+            	}
+            }
+        }
+     </script>
+</body>
+</html>
